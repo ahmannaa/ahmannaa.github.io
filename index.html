@@ -8,6 +8,27 @@
     body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
     nav { margin-bottom: 20px; }
     nav a { margin-right: 15px; text-decoration: none; color: #0366d6; font-weight: bold; }
+
+    /* New layout styles */
+    .container {
+      display: flex;
+      align-items: flex-start; /* align calculator and image top */
+      gap: 30px;               /* spacing between them */
+      flex-wrap: wrap;         /* so it stacks on smaller screens */
+    }
+    .calculator {
+      flex: 1;
+      min-width: 250px;
+    }
+    .decorative {
+      flex: 1;
+      min-width: 200px;
+    }
+    .decorative img {
+      max-width: 100%; /* makes the image responsive */
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
     .result { margin-top: 15px; font-size: 1.1rem; }
   </style>
 </head>
@@ -17,16 +38,26 @@
     <a href="contact.html">Contact Us</a>
   </nav>
 
-  <h1>AL Calculator</h1>
-  <p>Compute <strong>AL = D + 1</strong></p>
+  <div class="container">
+    <!-- Calculator block -->
+    <div class="calculator">
+      <h1>AL Calculator</h1>
+      <p>Compute <strong>AL = D + 1</strong></p>
 
-  <label for="dInput">Enter D:</label>
-  <input id="dInput" type="number" step="any" />
-  <button onclick="calculate()">Calculate</button>
+      <label for="dInput">Enter D:</label>
+      <input id="dInput" type="number" step="any" />
+      <button onclick="calculate()">Calculate</button>
 
-  <div class="result">
-    <p>D: <span id="dOut">—</span></p>
-    <p>AL: <span id="alOut">—</span></p>
+      <div class="result">
+        <p>D: <span id="dOut">—</span></p>
+        <p>AL: <span id="alOut">—</span></p>
+      </div>
+    </div>
+
+    <!-- Decorative image block -->
+    <div class="decorative">
+      <img src="myphoto.jpg" alt="Decorative illustration">
+    </div>
   </div>
 
   <script>
