@@ -5,125 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AL Calculator (AL = D + 1)</title>
   <style>
-    :root { --bg:#0f172a; --card:#111827; --text:#e5e7eb; --muted:#94a3b8; --accent:#22c55e; --err:#ef4444; }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; min-height: 100svh; display: grid; place-items: center;
-      background: radial-gradient(1200px 800px at 80% -20%, #1f2937 0, #0b1020 60%, #020617 100%);
-      color: var(--text); font: 16px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-    }
-    .card {
-      width: min(520px, 92vw);
-      background: linear-gradient(180deg, #0b1222, #0a0f1c);
-      border: 1px solid #1f2937; border-radius: 16px; padding: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03);
-    }
-    h1 { margin: 0 0 4px; font-size: 1.25rem; letter-spacing: .2px; }
-    p.sub { margin: 0 0 18px; color: var(--muted); font-size: .95rem; }
-    .row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: end; }
-    label { display: block; margin: 10px 0 6px; color: var(--muted); font-size: .9rem; }
-    input[type="number"] {
-      width: 100%; padding: 12px 14px; border-radius: 12px;
-      border: 1px solid #334155; background: #0b1222; color: var(--text);
-      font-size: 1.05rem; outline: none; transition: border .15s ease, box-shadow .15s ease;
-    }
-    input[type="number"]:focus { border-color: #64748b; box-shadow: 0 0 0 3px #64748b33; }
-    .btn {
-      padding: 12px 16px; border-radius: 12px; border: 1px solid #16a34a;
-      background: linear-gradient(180deg, #22c55e, #16a34a); color: #071309;
-      font-weight: 600; cursor: pointer; min-width: 120px;
-      transition: transform .05s ease, filter .15s ease;
-    }
-    .btn:active { transform: translateY(1px); }
-    .result {
-      margin-top: 18px; padding: 14px 16px; border-radius: 12px;
-      background: #0a1427; border: 1px solid #1f2a44; display: grid; gap: 6px;
-    }
-    .result .line { display: flex; justify-content: space-between; gap: 10px; }
-    .value { font-weight: 700; }
-    .ok { color: var(--accent); }
-    .err { color: var(--err); }
-    .small { font-size: .9rem; color: var(--muted); }
-    .footer { margin-top: 10px; font-size: .85rem; color: var(--muted); }
-    .kbd { padding: 1px 6px; border: 1px solid #334155; border-bottom-width: 2px; border-radius: 6px; background: #0b1222; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+    nav { margin-bottom: 20px; }
+    nav a { margin-right: 15px; text-decoration: none; color: #0366d6; font-weight: bold; }
+    .result { margin-top: 15px; font-size: 1.1rem; }
   </style>
 </head>
 <body>
-  <main class="card">
-    <h1>AL Calculator</h1>
-    <p class="sub">Compute <strong>AL = D + 1</strong>.</p>
+  <nav>
+    <a href="index.html">Calculator</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
 
-    <div>
-      <label for="dInput">Enter D</label>
-      <div class="row">
-        <input id="dInput" type="number" inputmode="decimal" step="any" placeholder="e.g., 2, 3.5, -1" />
-        <button id="calcBtn" class="btn" type="button" aria-label="Calculate AL">Calculate</button>
-      </div>
-    </div>
+  <h1>AL Calculator</h1>
+  <p>Compute <strong>AL = D + 1</strong></p>
 
-    <div id="result" class="result" aria-live="polite" role="status">
-      <div class="line"><span>Formula</span><span class="value">AL = D + 1</span></div>
-      <div class="line"><span>D</span><span id="dOut" class="value small">—</span></div>
-      <div class="line"><span>AL</span><span id="alOut" class="value ok">—</span></div>
-      <div id="msg" class="small"></div>
-    </div>
+  <label for="dInput">Enter D:</label>
+  <input id="dInput" type="number" step="any" />
+  <button onclick="calculate()">Calculate</button>
 
-    <div class="footer">Tip: press <span class="kbd">Enter</span> in the input to calculate.</div>
-  </main>
+  <div class="result">
+    <p>D: <span id="dOut">—</span></p>
+    <p>AL: <span id="alOut">—</span></p>
+  </div>
 
   <script>
-    (function () {
-      const dInput = document.getElementById('dInput');
-      const calcBtn = document.getElementById('calcBtn');
-      const dOut   = document.getElementById('dOut');
-      const alOut  = document.getElementById('alOut');
-      const msg    = document.getElementById('msg');
-
-      function isNumeric(value) {
-        return typeof value === 'number' && Number.isFinite(value);
+    function calculate() {
+      const d = parseFloat(document.getElementById("dInput").value);
+      if (isNaN(d)) {
+        document.getElementById("dOut").textContent = "—";
+        document.getElementById("alOut").textContent = "Invalid input";
+      } else {
+        document.getElementById("dOut").textContent = d;
+        document.getElementById("alOut").textContent = d + 1;
       }
-
-      function formatNumber(n) {
-        // Show up to 12 significant digits without trailing zeros
-        return Number(n).toString().length > 12 ? Number(n).toPrecision(12) : String(n);
-      }
-
-      function compute() {
-        const raw = dInput.value.trim();
-        const d = Number(raw);
-        if (!raw) {
-          dOut.textContent = '—';
-          alOut.textContent = '—';
-          alOut.classList.remove('err'); alOut.classList.add('ok');
-          msg.textContent = '';
-          return;
-        }
-        if (!isNumeric(d)) {
-          dOut.textContent = raw || '—';
-          alOut.textContent = 'Invalid input';
-          alOut.classList.remove('ok'); alOut.classList.add('err');
-          msg.textContent = 'Please enter a valid number for D.';
-          return;
-        }
-        const al = d + 1;
-        dOut.textContent = formatNumber(d);
-        alOut.textContent = formatNumber(al);
-        alOut.classList.remove('err'); alOut.classList.add('ok');
-        msg.textContent = '';
-      }
-
-      calcBtn.addEventListener('click', compute);
-      dInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') { compute(); }
-      });
-      dInput.addEventListener('input', () => {
-        // Live update as user types (optional). Comment this line to disable live updates.
-        compute();
-      });
-
-      // Focus on load for quick entry
-      window.addEventListener('DOMContentLoaded', () => dInput.focus());
-    }());
+    }
   </script>
 </body>
 </html>
