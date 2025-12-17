@@ -42,7 +42,7 @@
     <!-- Calculator block -->
     <div class="calculator">
       <h1>AL Calculator</h1>
-      <p>Compute <strong>AL = D + 1</strong></p>
+      <p>Compute <strong>AL = 2.76 + SQRT(D^2-19.8)</strong></p>
 
       <label for="dInput">Enter D:</label>
       <input id="dInput" type="number" step="any" />
@@ -68,7 +68,7 @@
         document.getElementById("alOut").textContent = "Invalid input";
       } else {
         document.getElementById("dOut").textContent = d;
-        document.getElementById("alOut").textContent = d + 1;
+        document.getElementById("alOut").textContent = 2.76+ sqrt(d^2-19.8);
       }
     }
   </script>
