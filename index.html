@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -68,7 +67,7 @@
         document.getElementById("alOut").textContent = "Invalid input";
       } else {
         document.getElementById("dOut").textContent = d;
-        document.getElementById("alOut").textContent = 2.76+ sqrt(d^2-19.8);
+        document.getElementById("alOut").textContent = 2.76+ Math.sqrt(d*d-19.8);
       }
     }
   </script>
